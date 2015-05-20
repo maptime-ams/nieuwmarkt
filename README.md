@@ -182,7 +182,7 @@ It's not easy to create a beautiful map if you have no experience with either In
 
 - Ungroup and unclip all objects. The PDF exported by QGIS contains grouped features inside clipping masks. This will make editing more difficult, it's best to try to get all the features out of all groups and clipping masks.
 - Create new, empty layers for roads, buildings, water, etc.
-- __This is most important tool:___ with _Edit > Select Same_ (Inkscape) or _Select > Same_ (Illustrator) you can select objects with the same color or appearance. We have used the style expression in QGIS to give map features of the same type a different color, now we can select those all those features at once. After we have selected them, we can place them in their own layer.
+- __This is most important tool:__ with _Edit > Select Same_ (Inkscape) or _Select > Same_ (Illustrator) you can select objects with the same color or appearance. We have used the style expression in QGIS to give map features of the same type a different color, now we can select those all those features at once. After we have selected them, we can place them in their own layer.
 - Water is blue, grass is green, and your map is finished!
 
 Steps:
