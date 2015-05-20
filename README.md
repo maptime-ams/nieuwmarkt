@@ -10,5 +10,4 @@ We will use data and information from the following sources:
 
 And we will design a map showing the construction of the subway:
 
-![]([nieuwmarkt.jpg)
-
+![](nieuwmarkt.jpg)
