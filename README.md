@@ -52,15 +52,15 @@ For this tutorial, we will make a simple map of the Nieuwmarkt neighbourhood, an
 
 Polygons:
 
-- Water - [`water`](http://wiki.openstreetmap.org/wiki/Key:water) key
-- Buildings - [`building`](http://wiki.openstreetmap.org/wiki/Key:building) key
-- natural - [`natural`](http://wiki.openstreetmap.org/wiki/Key:natural) key
+- Water - [`water` key](http://wiki.openstreetmap.org/wiki/Key:water)
+- Buildings - [`building` key](http://wiki.openstreetmap.org/wiki/Key:building)
+- natural - [`natural` key](http://wiki.openstreetmap.org/wiki/Key:natural)
 
 Lines:
 
-- Roads - [`highway`](http://wiki.openstreetmap.org/wiki/Key:highway) key
-- Railways - [`railway`](http://wiki.openstreetmap.org/wiki/Key:railway) key
-- Waterways - [`waterway`](http://wiki.openstreetmap.org/wiki/Key:waterway) key
+- Roads - [`highway` key](http://wiki.openstreetmap.org/wiki/Key:highway)
+- Railways - [`railway` key](http://wiki.openstreetmap.org/wiki/Key:railway)
+- Waterways - [`waterway` key](http://wiki.openstreetmap.org/wiki/Key:waterway)
 
 ## QGIS
 
@@ -108,3 +108,80 @@ Steps:
 - Filter polygons and lines by bounding box (or use Shapefiles in [`osm`](osm) directory),
 - Filter polygons by key, only use features with a non-empty `building`, `water` or `natural` key,
 - Filter lines by key, only use features with a non-empty `highway`, `railway` or `waterway` key.
+
+### Style data
+
+QGIS has advanced styling capabilities - see the _Style_ tab in the _Layer Properties_ window. But for small maps with static data (if you don't have to apply the same style to a set of different maps), it's usually much easier to do the final styling in Inkscape or Illustrator. And you'll get better looking maps, too.
+
+However, if you would export the polygons and lines layers without any styling, there will be no way to distinguish roads and railways and water and parks later. Therefor we do need to apply some basic styling (usually random colors will do) for the different values of the OpenStreetMap keys for both layers. We can do this in the _Style_ tab of the _Layer Properties_ window, by setting a custom expression as _Column_. If you click the little expression icon, the _Expression dialog_ will open.
+
+![](images/style-expression.png)
+
+We will use the following expression for the polygon layer:
+
+    CASE
+        WHEN "building" IS NOT NULL THEN 'building'
+        WHEN "water" IS NOT NULL THEN 'water'
+        WHEN "natural" IS NOT NULL THEN 'natural'
+    END
+
+And this one for the lines layer:
+
+    COALESCE("highway", "railway", "waterway")
+
+The `COALESCE` function will select the value of the first OSM key which is not NULL.
+
+After entering the expressions, QGIS will compute the different values this expression produces, and we will see these values in a list. We can apply random colors to each of the values by selecting _Random colors_ in the _Color ramp_ drop-down, and clicking _Classify_.
+
+![](images/layer-properties.png)
+
+Steps:
+
+- Apply style expression for polygons layer,
+- Apply style expression for lines layer.
+
+For more information about making maps with QGIS, see the following tutorials:
+
+- http://www.qgistutorials.com/en/docs/making_a_map.html
+- http://qgis.spatialthoughts.com/2012/06/making-maps-for-print-using-qgis.html
+
+### Labels
+
+QGIS also does labels. Our lines layer contains the names of roads and canals in the OSM [`name` key](http://wiki.openstreetmap.org/wiki/Key:name). We can turn on and configure label placement in the _Layer Properties_ window, and select the `name` field as our label expression.
+
+![](images/labels.png)
+
+Labeling is difficult to get right, it's easiest just to let QGIS render each label once for each street, and set the fonts, exact placement, shadow, halo and curvature later in Inkscape or Illustrator.
+
+Steps:
+
+- Turn on labels for the lines layer, using the `name` field.
+
+### Export
+
+First, set the correct projecten in the _Project Properties_. Set the projection to _Amersfoort / RD New (EPSG:28992)_.
+
+![](images/projection.png)
+
+Now we can create a _New Print Composer_, choose a name, and add our map to the newly created Print Composer with _Layout > Add Map_. We can zoom and pan with the _Move item content_ option, if we're happy with how the map looks, choose _Export as PDF_.
+
+![](images/print-composer.png)
+
+Steps:
+
+- Set map projection to EPSG:28992,
+- Create new print composer,
+- Add map to print composer,
+- Export map as PDF
+
+## Map design
+
+Now we have a PDF containing our map data, and we can use Inkscape, Illustrator, or any other vector editor to open this PDF file and style the map.
+
+Steps:
+
+- Download and install [Inkscape](https://inkscape.org/en/) or the trial version of [Adobe Illustrator](http://www.adobe.com/products/illustrator.html)
+- Open the exported PDF
+- Style your map!
+
+![](images/illustrator.png)
